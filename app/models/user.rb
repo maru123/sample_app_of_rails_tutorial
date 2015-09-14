@@ -21,9 +21,7 @@ class User < ActiveRecord::Base
     Digest::SHA1.hexdigest(token.to_s)
   end
   def feed
-    # このコードは準備段階です。
-    # 完全な実装は第11章「ユーザーをフォローする」を参照してください。
-    Micropost.where("user_id = ?", id)
+    Micropost.from_users_followed_by(self)
   end
   def following?(other_user)
     relationships.find_by(followed_id: other_user.id)
