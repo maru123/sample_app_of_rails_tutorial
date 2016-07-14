@@ -14,6 +14,10 @@ class User < ActiveRecord::Base
                     uniqueness: { case_sensitive: false }
   has_secure_password
   validates :password, length: { minimum: 6 }
+
+  scope :name_like, -> name { where('name like ?', name) if name.present? }
+  scope :email_like, -> email { where('email like ?', email) if email.present? }
+
   def User.new_remember_token
     SecureRandom.urlsafe_base64
   end
@@ -34,13 +38,7 @@ class User < ActiveRecord::Base
   def unfollow!(other_user)
     relationships.find_by(followed_id: other_user.id).destroy
   end
-  def self.search(search)
-    if search
-      find(:all, :conditions => ['name LIKE ?', "%#{search}%"])
-    else
-      find(:all)
-    end
-  end
+
   private
     def create_remember_token
       self.remember_token = User.encrypt(User.new_remember_token)

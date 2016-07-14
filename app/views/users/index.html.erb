@@ -5,7 +5,10 @@
 
   <%= form_tag users_path, :method => 'get' do %>
     <p>
-      <%= text_field_tag :search, params[:search]%>
+      <%= label_tag :name %>
+      <%= text_field :conditions, :name %>
+      <%= label_tag :email %>
+      <%= email_field :conditions, :email %>
       <%= submit_tag "Search", :name => nil %>
     </p>
   <% end %>
